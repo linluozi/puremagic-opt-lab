@@ -1,0 +1,77 @@
+{
+  "impl": "optimized",
+  "impl_root": "/home/ubuntu/GitHub/work/algo",
+  "api": "magic",
+  "seed": 4321,
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "platform": "Linux-6.8.0-124-generic-x86_64-with-glibc2.39",
+  "cpu": {
+    "model": "AMD EPYC 7K62 48-Core Processor",
+    "cores": "4",
+    "mhz": "unknown",
+    "lscpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  4\nOn-line CPU(s) list:                     0-3\nVendor ID:                               AuthenticAMD\nModel name:                              AMD EPYC 7K62 48-Core Processor\nCPU family:                              23\nModel:                                   49\nThread(s) per core:                      1\nCore(s) per socket:                      4\nSocket(s):                               1\nStepping:                                0\nBogoMIPS:                                5190.24\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm rep_good nopl cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext ibpb vmmcall fsgsbase bmi1 avx2 smep bmi2 rdseed adx smap clflushopt sha_ni xsaveopt xsavec xgetbv1 arat\nHypervisor vendor:                       KVM\nVirtualization type:                     full\nL1d cache:                               128 KiB (4 instances)\nL1i cache:                               128 KiB (4 instances)\nL2 cache:                                16 MiB (4 instances)\nL3 cache:                                16 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-3\nVulnerability Gather data sampling:      Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:   "
+  },
+  "memory": "MemTotal:        3812564 kB\nMemFree:          247432 kB\nMemAvailable:    2378800 kB",
+  "warmup": 3,
+  "reps": 5,
+  "upstream_tests": {
+    "command": "cd upstream && python -m pytest test -q",
+    "result": "150 passed in 0.59s"
+  },
+  "scales": {
+    "small": {
+      "n_files": 150,
+      "n_bytes": 14563757,
+      "paths_sha256": "45adb054dcba2aa1cf6d2b8c5d2a5bbac36d3e270bfdbcaa3fec3e4520e2bd69",
+      "median_s": 0.011009101755917072,
+      "p25_s": 0.01095091737806797,
+      "p75_s": 0.011080209165811539,
+      "min_s": 0.010941464453935623,
+      "max_s": 0.011096003465354443,
+      "rel_stdev": 0.0053626498994769,
+      "samples_s": [
+        0.011064414866268635,
+        0.010941464453935623,
+        0.010960370302200317,
+        0.011096003465354443,
+        0.011009101755917072
+      ]
+    },
+    "medium": {
+      "n_files": 500,
+      "n_bytes": 21304895,
+      "paths_sha256": "8bcb55d1d9c26407c65227166a45bc2dc64a8ed992afc121a4afe01cd3eeb3ea",
+      "median_s": 0.03549152612686157,
+      "p25_s": 0.03543417388573289,
+      "p75_s": 0.03563429554924369,
+      "min_s": 0.035418929532170296,
+      "max_s": 0.035644084215164185,
+      "rel_stdev": 0.002587395700140371,
+      "samples_s": [
+        0.035644084215164185,
+        0.035418929532170296,
+        0.03544941823929548,
+        0.03549152612686157,
+        0.03562450688332319
+      ]
+    },
+    "large": {
+      "n_files": 1200,
+      "n_bytes": 118319999,
+      "paths_sha256": "3c92473b781a8924056ed73a866d1dd280ff9127b0310b2b3d9e87f0f5ad2147",
+      "median_s": 0.08848595526069403,
+      "p25_s": 0.0884433058090508,
+      "p75_s": 0.08981074718758464,
+      "min_s": 0.08843020163476467,
+      "max_s": 0.09053384698927402,
+      "rel_stdev": 0.009103999037933538,
+      "samples_s": [
+        0.09053384698927402,
+        0.08908764738589525,
+        0.08848595526069403,
+        0.08843020163476467,
+        0.08845640998333693
+      ]
+    }
+  }
+}

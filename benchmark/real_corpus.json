@@ -1,0 +1,66 @@
+{
+  "api": "magic_string",
+  "total_bytes": 140572240,
+  "n_files": 8,
+  "median_speedup": 4.283688345782146,
+  "min_speedup": 4.076817498051014,
+  "max_speedup": 4.764587200387378,
+  "files": [
+    {
+      "path": "/usr/share/doc/nodejs/api/all.html",
+      "bytes": 5840766,
+      "baseline_s": 0.000341012142598629,
+      "optimized_s": 7.999129593372345e-05,
+      "speedup": 4.263115612993364
+    },
+    {
+      "path": "/usr/share/doc/nodejs/api/fs.html",
+      "bytes": 498323,
+      "baseline_s": 0.00034356582909822464,
+      "optimized_s": 7.98199325799942e-05,
+      "speedup": 4.304261078570929
+    },
+    {
+      "path": "/usr/lib/python3.12/pydoc_data/topics.py",
+      "bytes": 805508,
+      "baseline_s": 0.0003457888960838318,
+      "optimized_s": 8.481834083795547e-05,
+      "speedup": 4.076817498051014
+    },
+    {
+      "path": "/usr/lib/python3.12/_pydecimal.py",
+      "bytes": 229220,
+      "baseline_s": 0.000338967889547348,
+      "optimized_s": 8.02408903837204e-05,
+      "speedup": 4.224378467466747
+    },
+    {
+      "path": "/usr/bin/dockerd",
+      "bytes": 83879288,
+      "baseline_s": 0.0003310618922114372,
+      "optimized_s": 7.066316902637482e-05,
+      "speedup": 4.6850699844479005
+    },
+    {
+      "path": "/usr/bin/caddy",
+      "bytes": 48521378,
+      "baseline_s": 0.000331733375787735,
+      "optimized_s": 7.157493382692337e-05,
+      "speedup": 4.634770275721182
+    },
+    {
+      "path": "/usr/share/icons/hicolor/256x256/apps/google-chrome.png",
+      "bytes": 38037,
+      "baseline_s": 0.0003299005329608917,
+      "optimized_s": 6.924010813236237e-05,
+      "speedup": 4.764587200387378
+    },
+    {
+      "path": "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+      "bytes": 759720,
+      "baseline_s": 0.0003344286233186722,
+      "optimized_s": 8.183438330888748e-05,
+      "speedup": 4.08665172017435
+    }
+  ]
+}

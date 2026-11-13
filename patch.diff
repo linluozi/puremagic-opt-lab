@@ -1,0 +1,65 @@
+diff --git a/puremagic/main.py b/puremagic/main.py
+index 8109d90..60af102 100644
+--- a/puremagic/main.py
++++ b/puremagic/main.py
+@@ -133,6 +133,36 @@ def get_max_lengths() -> tuple[int, int]:
+ max_head, max_foot = get_max_lengths()
+ 
+ 
++def _build_header_index(header_array):
++    """Index header signatures by the byte they compare first.
++
++    Offset-0 rows are bucketed by their first byte. Positive-offset rows stay
++    in their original order, because their first compared byte lives at
++    ``header[offset]`` and is only known at call time. Buckets are pre-merged
++    per possible first byte so the stable confidence tie-break keeps the
++    original signature order without sorting on every call.
++    """
++    at_zero = {}
++    at_offset = []
++    for order, row in enumerate(header_array):
++        if not row.byte_match or row.offset != 0:
++            at_offset.append((order, row))
++        else:
++            at_zero.setdefault(row.byte_match[0], []).append((order, row))
++    merged = {}
++    for first_byte in range(256):
++        merged[first_byte] = tuple(
++            sorted(list(at_zero.get(first_byte, ())) + at_offset, key=lambda item: item[0])
++        )
++    return merged, tuple(at_offset)
++
++
++_header_by_first_byte, _header_at_offset = _build_header_index(magic_header_array)
++_ALL_EXTENSIONS = frozenset(
++    row.extension for row in chain(magic_header_array, magic_footer_array) if isinstance(row.extension, str)
++)
++
++
+ def determine_confidence(matches, ext=None) -> list[PureMagicWithConfidence]:
+     """Rough confidence based on string length and file extension"""
+     results = []
+@@ -158,7 +188,8 @@ def identify_all(header: bytes, footer: bytes, ext=None) -> list[PureMagicWithCo
+     # Capture the length of the data
+     # That way we do not try to identify bytes that don't exist
+     matches = []
+-    for magic_row in magic_header_array:
++    candidates = _header_by_first_byte.get(header[0], _header_at_offset) if header else _header_at_offset
++    for _, magic_row in candidates:
+         start = magic_row.offset
+         end = magic_row.offset + len(magic_row.byte_match)
+         if end > len(header):
+@@ -274,12 +305,10 @@ def ext_from_filename(filename: os.PathLike | str) -> str:
+     except ValueError:
+         return ""
+     ext = f".{ext}"
+-    all_exts = [x.extension for x in chain(magic_header_array, magic_footer_array)]
+-
+     if base[-4:].startswith("."):
+         # For double extensions like .tar.gz
+         long_ext = base[-4:] + ext
+-        if long_ext in all_exts:
++        if long_ext in _ALL_EXTENSIONS:
+             return long_ext
+     return ext
+ 

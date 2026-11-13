@@ -1,0 +1,9 @@
+{
+  "impl": "optimized",
+  "scale": "medium",
+  "rep": 1,
+  "n_files": 500,
+  "n_bytes": 21304895,
+  "seconds": 1.2113742884248495,
+  "api": "file"
+}

@@ -1,0 +1,9 @@
+{
+  "impl": "optimized",
+  "scale": "large",
+  "rep": 5,
+  "n_files": 1200,
+  "n_bytes": 118319999,
+  "seconds": 0.08845640998333693,
+  "api": "magic"
+}

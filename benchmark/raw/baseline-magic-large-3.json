@@ -1,0 +1,9 @@
+{
+  "impl": "baseline",
+  "scale": "large",
+  "rep": 3,
+  "n_files": 1200,
+  "n_bytes": 118319999,
+  "seconds": 0.4199926480650902,
+  "api": "magic"
+}

@@ -1,0 +1,120 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [ "setuptools", "setuptools-scm[toml]>=6.2" ]
+
+[project]
+name = "puremagic"
+description = "Pure python implementation of magic file detection"
+readme = "README.rst"
+license = "MIT"
+authors = [
+  { name = "Chris Griffith", email = "chris@cdgriffith.com" },
+]
+requires-python = ">=3.12"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Topic :: Utilities",
+]
+dynamic = [ "version" ]
+urls.Homepage = "https://github.com/cdgriffith/puremagic"
+scripts.puremagic = "puremagic.main:command_line_entry"
+
+[dependency-groups]
+dev = [
+  "codespell>=2.4.3",
+  "coverage>=7.17.1",
+  "poethepoet>=0.49",
+  "pre-commit>=4.7",
+  "pytest>=9.2",
+  "pytest-cov>=7",
+  "ruff>=0.17.3",
+  "setuptools>=84.2",
+  "twine>=7",
+  "ty>=0.0.97",
+  "wheel>=0.48",
+]
+
+[tool.setuptools]
+packages.find.where = [ "." ]
+packages.find.include = [ "puremagic*" ]
+package-data."*" = [ "*.json" ]
+dynamic.version = { attr = "puremagic.main.__version__" }
+
+[tool.black]
+# Prevent black from linting as we use Ruff now
+force-exclude = ".*\\.py$"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+indent-width = 4
+# Exclude a variety of commonly ignored directories.
+exclude = [
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".git-rewrite",
+  ".ipynb_checkpoints",
+  ".pytest_cache",
+  ".pytype",
+  ".ruff_cache",
+  ".ty",
+  ".venv",
+  ".vscode",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "venv",
+]
+# Like Black, indent with spaces, rather than tabs.
+format.indent-style = "space"
+# Like Black, use double quotes for strings.
+format.quote-style = "double"
+format.line-ending = "lf"
+# Like Black, respect magic trailing commas.
+format.skip-magic-trailing-comma = false
+# Set the line length limit used when formatting code snippets in
+# docstrings.
+#
+# This only has an effect when the `docstring-code-format` setting is
+# enabled.
+format.docstring-code-line-length = "dynamic"
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+#
+# This is currently disabled by default, but it is planned for this
+# to be opt-out in the future.
+format.docstring-code-format = true
+# Deep scanning is best effort: a malformed or unusual file must fall through to the next
+# scanner instead of crashing detection, so broad exception handling is intentional.
+lint.ignore = [ "BLE001", "S110", "S112" ]
+lint.fixable = [ "F541" ]
+lint.unfixable = [ "F401" ]
+
+[tool.flake8]
+# Prevent flake8 from linting as we use Ruff now
+exclude = [ "*" ]
+
+[tool.pyproject-fmt]
+# Only claim Python versions that CI tests
+max_supported_python = "3.15"
+
+[tool.poe]
+executor.type = "uv"
+tasks.test = "pytest --cov=puremagic test/"
+tasks.lint = "ruff check --fix"
+tasks.format = "ruff format"
+tasks.typecheck = "ty check"
+tasks.spellcheck = "codespell --ignore-words-list=addin,caf,tye,wors --skip='*.json' puremagic/"
