@@ -88,9 +88,10 @@ match. On the same three scales the full pipeline is:
 
 This is the honest whole-product number: deepscan dominates, so the header
 index is largely hidden for files that trigger a scanner. A separate independent
-clone rerun measured 1.149x / 1.121x / 1.139x (median **1.139x**). The full
-pipeline therefore sits **on the 1.15x boundary** (1.12-1.16x across runs), and
-this README does not claim it as the passing gate. The G3b real-corpus gate is
+clone rerun measured 1.149x / 1.121x / 1.139x (median **1.139x**), and a second
+rerun measured 1.122x / 1.096x / 1.155x (median **1.122x**). The full pipeline
+therefore sits **on or below the 1.15x boundary** (1.10-1.16x across individual
+scale points), and this README does not claim it as the passing gate. The G3b real-corpus gate is
 claimed on the optimized API (`magic_string`) at 4.284x, where the header index
 is the actual work; the full pipeline is disclosed as a boundary-level result,
 not as a 4.8x end-to-end claim.
@@ -121,7 +122,7 @@ number of unique inputs, not loop iterations.
 | G1 upstream tests | 150 passed, 0 failed | `cd /tmp/puremagic-baseline && python -m pytest test -q` |
 | G2 differential | 1,941 unique / 7,764 comparisons / 0 mismatch | `python -m pytest tests/test_diff.py -q -s` |
 | G3 median speedup | 4.843x (scales 4.843/4.916/4.746) | `python benchmark/bench.py --impl-root . --impl optimized --out benchmark/optimized.json --api magic` and the baseline command below |
-| G3b real corpus | 4.284x median / 4.077x worst file (independent rerun 4.381x / 3.500x); full pipeline 1.12-1.16x, boundary disclosed | `python benchmark/real_corpus.py ...` (commands below) |
+| G3b real corpus | 4.284x median / 4.077x worst file (independent rerun 4.381x / 3.500x); full pipeline 1.10-1.16x, does not reliably clear 1.15x; disclosed | `python benchmark/real_corpus.py ...` (commands below) |
 | G4 large scale | 4.746x magic, 1.161x full pipeline, both >= 0.95x | same bench, `large` scale |
 | G5 peak RSS | 32,780 kB -> 33,292 kB = **1.016x** | `/usr/bin/time -v python /tmp/memprobe.py <root>` |
 
@@ -151,7 +152,7 @@ runs.
 **B 档：把“首个比较字节索引”拆成两个可分别回退的 hunk，并用留一消融 +
 输入类下限 + 全管线归因说明收益到底落在哪一层。** 已有台账做过“调用点归因”
 和“最弱文件门禁”，但没有逐 hunk 留一消融；本轮的实测新结论是：
-magic 匹配层可提速 4.8x，但真实 `from_file()` 全管线只有 1.12-1.16x，因为 deepscan
+magic 匹配层可提速 4.8x，但真实 `from_file()` 全管线只有 1.10-1.16x，因为 deepscan
 占了大头；单靠 H1 全管线只有 1.115x（低于 1.15 门线），必须把 H2 的
 扩展表缓存一起做才勉强到线，且独立复跑会落到 1.139x。这个“局部大收益、全管线刚过线”的分层结论是本轮
 新增的可验证判断，换一个上游不能直接复现。
