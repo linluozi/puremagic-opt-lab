@@ -167,16 +167,15 @@ magic 匹配层可提速 4.8x，但真实 `from_file()` 全管线只有 1.10-1.1
 ## Reproduce
 
 ```bash
-git clone --depth=1 git@github-linluozi:linluozi/puremagic-opt-lab.git && cd puremagic-opt-lab
+git clone --depth=1 https://github.com/linluozi/puremagic-opt-lab.git && cd puremagic-opt-lab
 python3 -m venv .venv && . .venv/bin/activate && pip install -q pytest && pip install -q -e .
 python -m pytest tests/test_diff.py -q && python benchmark/bench.py --impl-root . --impl optimized --out benchmark/optimized.json --api magic
 ```
 
-Baseline needs the pinned upstream checkout (this machine has GitHub HTTPS
-blocked, hence SSH):
+Baseline needs the pinned upstream checkout:
 
 ```bash
-git clone --depth=1 git@github-linluozi:cdgriffith/puremagic.git /tmp/puremagic-baseline
+git clone --depth=1 https://github.com/cdgriffith/puremagic.git /tmp/puremagic-baseline
 git -C /tmp/puremagic-baseline checkout b6f856696e185eab639c1fba5fdaa2a26e61a9dd
 python benchmark/bench.py --impl-root /tmp/puremagic-baseline --impl baseline --out benchmark/baseline.json --api magic
 python benchmark/real_corpus.py --root /tmp/puremagic-baseline --impl baseline --out benchmark/real_baseline.json
