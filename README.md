@@ -8,7 +8,7 @@ every call.
 Upstream: https://github.com/cdgriffith/puremagic
 Pinned commit: `b6f856696e185eab639c1fba5fdaa2a26e61a9dd` (puremagic 2.2.0)
 
-Two hunks, 33 insertions / 4 deletions in `puremagic/main.py`:
+Two changes, 33 insertions / 4 deletions in `puremagic/main.py`:
 
 1. **Header index.** Offset-0 signatures are bucketed by `byte_match[0]`;
    positive-offset signatures stay in one ordered list. Per-first-byte buckets

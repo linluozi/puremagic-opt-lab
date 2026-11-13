@@ -15,7 +15,7 @@
   "warmup": 3,
   "reps": 5,
   "upstream_tests": {
-    "command": "cd upstream && python -m pytest test -q",
+    "command": "cd /tmp/puremagic-baseline && python -m pytest test -q",
     "result": "150 passed in 0.59s"
   },
   "scales": {
