@@ -77,6 +77,7 @@ def merge(base_path: str, opt_path: str) -> dict:
             "optimized_s": o,
             "speedup": b / o,
             "paths": [row["path"] for row in base["classes"][cls]["files"]],
+            "sha256": [row["sha256"] for row in base["classes"][cls]["files"]],
         }
     out["min_speedup"] = min(v["speedup"] for v in out["classes"].values())
     return out
