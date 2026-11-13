@@ -1,0 +1,10 @@
+{
+  "impl": "optimized",
+  "api": "file",
+  "scale": "medium",
+  "rep": 3,
+  "n_files": 500,
+  "n_bytes": 21304895,
+  "seconds": 0.04922856483608484,
+  "deepscan": "0"
+}

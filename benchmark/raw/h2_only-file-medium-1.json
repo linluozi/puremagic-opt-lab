@@ -1,9 +1,0 @@
-{
-  "impl": "h2_only",
-  "scale": "medium",
-  "rep": 1,
-  "n_files": 500,
-  "n_bytes": 21304895,
-  "seconds": 0.18721096869558096,
-  "api": "file"
-}

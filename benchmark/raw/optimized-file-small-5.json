@@ -1,9 +1,0 @@
-{
-  "impl": "optimized",
-  "scale": "small",
-  "rep": 5,
-  "n_files": 150,
-  "n_bytes": 14563757,
-  "seconds": 0.37530892714858055,
-  "api": "file"
-}

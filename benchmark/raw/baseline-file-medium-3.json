@@ -1,9 +1,0 @@
-{
-  "impl": "baseline",
-  "scale": "medium",
-  "rep": 3,
-  "n_files": 500,
-  "n_bytes": 21304895,
-  "seconds": 0.22442893404513597,
-  "api": "file"
-}

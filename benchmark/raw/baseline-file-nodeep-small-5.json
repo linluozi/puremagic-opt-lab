@@ -1,0 +1,10 @@
+{
+  "impl": "baseline",
+  "api": "file",
+  "scale": "small",
+  "rep": 5,
+  "n_files": 150,
+  "n_bytes": 14563757,
+  "seconds": 0.06510564405471087,
+  "deepscan": "0"
+}

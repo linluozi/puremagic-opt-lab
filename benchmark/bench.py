@@ -183,8 +183,12 @@ def main() -> int:
                 "n_bytes": sum(item["bytes"] for item in items),
                 "seconds": seconds,
                 "api": args.api,
+                "deepscan": os.getenv("PUREMAGIC_DEEPSCAN", "1") if args.api == "file" else "n/a",
             }
-            (raw_dir / f"{args.impl}-{args.api}-{name}-{index}.json").write_text(
+            deep = os.getenv("PUREMAGIC_DEEPSCAN", "1")
+            label = "deep" if args.api == "file" and deep != "0" else "nodeep"
+            suffix = f"-{label}" if args.api == "file" else ""
+            (raw_dir / f"{args.impl}-{args.api}{suffix}-{name}-{index}.json").write_text(
                 json.dumps(raw, indent=2) + "\n", encoding="utf-8"
             )
         result["scales"][name] = {
