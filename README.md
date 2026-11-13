@@ -140,14 +140,16 @@ Workload: `from_file()`, 500 real files, `PUREMAGIC_DEEPSCAN=0`.
 
 | Variant | Median | Speedup | Saving vs baseline |
 |---|---:|---:|---:|
-| baseline | 218.967 ms | 1.000x | - |
-| H1 only (header index) | 79.050 ms | 2.770x | 139.917 ms |
-| H2 only (extension set) | 187.211 ms | 1.170x | 31.756 ms |
-| H1 + H2 | 49.913 ms | 4.387x | 169.054 ms |
+| baseline | 236.400 ms | 1.000x | - |
+| H1 only (header index) | 93.233 ms | 2.536x | 143.167 ms |
+| H2 only (extension set) | 187.790 ms | 1.259x | 48.610 ms |
+| H1 + H2 | 50.460 ms | 4.685x | 185.940 ms |
 
-H1 + H2 individual savings = 171.673 ms, **101.5%** of the measured total
-saving (difference is run-to-run noise). Leave-one-out marginals: removing H2
-adds 29.137 ms; removing H1 adds 137.298 ms. Each hunk's claimed saving is
+H1 + H2 individual savings = 191.778 ms, **103.1%** of the measured total
+saving (difference is run-to-run noise; an earlier run gave 101.5%). The
+qualitative conclusion is stable across runs: H1 carries most of the saving and
+H2 is small but needed to clear 1.15x on the full path. Leave-one-out marginals
+in the committed run: removing H2 adds 42.773 ms; removing H1 adds 137.330 ms. Each hunk's claimed saving is
 measured by actually rebuilding that variant, not by subtraction of unrelated
 runs. `benchmark/variants/h1_only.patch` and `h2_only.patch` reconstruct the two
 variants; `benchmark/ablation.py` reruns all four roots on the same workload.
