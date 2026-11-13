@@ -1,0 +1,28 @@
+diff --git a/puremagic/main.py b/puremagic/main.py
+index 8109d90..428918c 100644
+--- a/puremagic/main.py
++++ b/puremagic/main.py
+@@ -131,6 +131,9 @@ def get_max_lengths() -> tuple[int, int]:
+ 
+ 
+ max_head, max_foot = get_max_lengths()
++_ALL_EXTENSIONS = frozenset(
++    row.extension for row in chain(magic_header_array, magic_footer_array) if isinstance(row.extension, str)
++)
+ 
+ 
+ def determine_confidence(matches, ext=None) -> list[PureMagicWithConfidence]:
+@@ -274,12 +277,10 @@ def ext_from_filename(filename: os.PathLike | str) -> str:
+     except ValueError:
+         return ""
+     ext = f".{ext}"
+-    all_exts = [x.extension for x in chain(magic_header_array, magic_footer_array)]
+-
+     if base[-4:].startswith("."):
+         # For double extensions like .tar.gz
+         long_ext = base[-4:] + ext
+-        if long_ext in all_exts:
++        if long_ext in _ALL_EXTENSIONS:
+             return long_ext
+     return ext
+ 

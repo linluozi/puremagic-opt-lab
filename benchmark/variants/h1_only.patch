@@ -1,0 +1,56 @@
+diff --git a/puremagic/main.py b/puremagic/main.py
+index 8109d90..fef4e92 100644
+--- a/puremagic/main.py
++++ b/puremagic/main.py
+@@ -133,6 +133,24 @@ def get_max_lengths() -> tuple[int, int]:
+ max_head, max_foot = get_max_lengths()
+ 
+ 
++def _build_zero_index(header_array):
++    at_zero = {}
++    at_offset = []
++    for order, row in enumerate(header_array):
++        if not row.byte_match or row.offset != 0:
++            at_offset.append((order, row))
++        else:
++            at_zero.setdefault(row.byte_match[0], []).append((order, row))
++    at_offset.sort(key=lambda item: item[0])
++    merged = {}
++    for first_byte in range(256):
++        merged[first_byte] = tuple(sorted(list(at_zero.get(first_byte, ())) + at_offset, key=lambda item: item[0]))
++    return merged, tuple(at_offset)
++
++
++_header_by_first_byte, _header_at_offset = _build_zero_index(magic_header_array)
++
++
+ def determine_confidence(matches, ext=None) -> list[PureMagicWithConfidence]:
+     """Rough confidence based on string length and file extension"""
+     results = []
+@@ -158,7 +176,8 @@ def identify_all(header: bytes, footer: bytes, ext=None) -> list[PureMagicWithCo
+     # Capture the length of the data
+     # That way we do not try to identify bytes that don't exist
+     matches = []
+-    for magic_row in magic_header_array:
++    candidates = _header_by_first_byte.get(header[0], _header_at_offset) if header else _header_at_offset
++    for _, magic_row in candidates:
+         start = magic_row.offset
+         end = magic_row.offset + len(magic_row.byte_match)
+         if end > len(header):
+diff --git a/test/resources/office/text_crlf.txt b/test/resources/office/text_crlf.txt
+index 273d619..69e159f 100644
+--- a/test/resources/office/text_crlf.txt
++++ b/test/resources/office/text_crlf.txt
+@@ -1,6 +1,6 @@
+-Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+-sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+-
+-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
++Lorem ipsum dolor sit amet, consectetur adipiscing elit,
++sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
++
++Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
++Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
++Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

@@ -38,7 +38,7 @@ SHA-256.
 
 Median of the three scale speedups: **4.843x**. Warmup 3 + 5 timed repetitions
 per scale; raw samples are in `benchmark/raw/`. Relative standard deviation was
-0.3-2.4% for these runs.
+0.1-3.5% across all committed runs.
 
 ### Real corpus, per file (`benchmark/real_corpus.json`)
 
@@ -57,7 +57,10 @@ font. Each file: 3 warmups + 7 timed calls.
 | `/usr/share/icons/hicolor/256x256/apps/google-chrome.png` | 38,037 | 4.765x |
 | `/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf` | 759,720 | 4.087x |
 
-Per-file median **4.284x**, worst real file **4.077x**. A separate independent
+Per-file median **4.284x**, worst real file **4.077x**. `puremagic` reads only
+`max_head` (36,870 B) plus the tail per call, so 140 MB is the corpus size, not
+the number of bytes scanned; the per-file speedup is a constant per-call match
+cost, not a throughput claim that scales with file size. A separate independent
 clone rerun measured per-file median 4.381x / 4.423x with the worst file at
 3.500x; the committed run is not presented as a guaranteed per-file floor.
 
@@ -67,13 +70,14 @@ clone rerun measured per-file median 4.381x / 4.423x with the worst file at
 
 | Class | Speedup |
 |---|---:|
-| HTML | 4.333x |
-| Python source | 5.341x |
-| ELF binaries | 4.787x |
-| PNG images | 5.654x |
-| TTF fonts | 4.268x |
+| HTML | 4.258x |
+| Python source | 5.175x |
+| ELF binaries | 4.812x |
+| PNG images | 5.800x |
+| TTF fonts | 4.337x |
 
-Minimum across classes: **4.268x** (no class regresses).
+Minimum across classes: **4.258x** (no class regresses). `benchmark/per_class.py`
+records every path and SHA-256 in `benchmark/per_class.json`.
 
 ### Full `from_file()` pipeline, including deep scanners (`benchmark/*_file_deep.json`)
 
@@ -123,8 +127,8 @@ number of unique inputs, not loop iterations.
 | G2 differential | 1,941 unique / 7,764 comparisons / 0 mismatch | `python -m pytest tests/test_diff.py -q -s` |
 | G3 median speedup | 4.843x (scales 4.843/4.916/4.746) | `python benchmark/bench.py --impl-root . --impl optimized --out benchmark/optimized.json --api magic` and the baseline command below |
 | G3b real corpus | 4.284x median / 4.077x worst file (independent rerun 4.381x / 3.500x); full pipeline 1.10-1.16x, does not reliably clear 1.15x; disclosed | `python benchmark/real_corpus.py ...` (commands below) |
-| G4 large scale | 4.746x magic, 1.161x full pipeline, both >= 0.95x | same bench, `large` scale |
-| G5 peak RSS | 32,780 kB -> 33,292 kB = **1.016x** | `/usr/bin/time -v python /tmp/memprobe.py <root>` |
+| G4 large scale | 4.746x magic; full pipeline 1.10-1.16x (both >= 0.95x) | same bench, `large` scale |
+| G5 peak RSS | 32,780 kB -> 33,292 kB = **1.016x** | `/usr/bin/time -v python benchmark/memprobe.py <root>` |
 
 G5 probe processes 200 HTML + 300 Python files through `magic_string()`.
 The +512 kB is the pre-merged index (256 buckets); no per-call allocation
@@ -145,7 +149,8 @@ H1 + H2 individual savings = 171.673 ms, **101.5%** of the measured total
 saving (difference is run-to-run noise). Leave-one-out marginals: removing H2
 adds 29.137 ms; removing H1 adds 137.298 ms. Each hunk's claimed saving is
 measured by actually rebuilding that variant, not by subtraction of unrelated
-runs.
+runs. `benchmark/variants/h1_only.patch` and `h2_only.patch` reconstruct the two
+variants; `benchmark/ablation.py` reruns all four roots on the same workload.
 
 ## 本轮创新
 
@@ -193,6 +198,8 @@ git -C /tmp/puremagic-baseline apply --check patch.diff
   and recorded by SHA-256 in each JSON)
 - Timing: `time.perf_counter()`, warmup 3, 5 timed reps; medians with p25/p75
   and raw samples retained
+- Cold import: 84.9 ms -> 89.0 ms (+4.7%) in an independent rerun, from the
+  256 pre-merged buckets (+512 kB RSS); disclosed, not hidden in the speedups
 
 ## License and provenance
 

@@ -145,15 +145,18 @@ def test_differential_1000_plus_unique_samples() -> None:
     samples = corpus()
     assert len(samples) >= 1000, f"only {len(samples)} unique samples"
     checked = 0
+    mismatches = 0
     for data in samples:
         header, footer = m.string_details(data)
         for ext in (None, ".html", ".py", ".png"):
             expected = [tuple(row) for row in baseline_identify_all(header, footer, ext)]
             actual = [tuple(row) for row in m.identify_all(header, footer, ext)]
+            if actual != expected:
+                mismatches += 1
             assert actual == expected, (data[:32].hex(), ext, expected[:3], actual[:3])
             checked += 1
     assert checked >= 1000
-    print(f"unique inputs={len(samples)} comparisons={checked} mismatches=0")
+    print(f"unique inputs={len(samples)} comparisons={checked} mismatches={mismatches}")
 
 
 def test_extension_lookup_matches_upstream() -> None:
